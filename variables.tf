@@ -1,9 +1,13 @@
-variable "location" {
-  type    = string
-  default = "westeurope"
+variable "resource_group_name" {
+  type = string
 }
 
-variable "resource_group_name" {
+variable "location" {
   type    = string
-  default = "datacorp-rg"
+  default = "francecentral"
+}
+
+variable "storage_container_name" {
+  type    = string
+  default = "raw"
 }
