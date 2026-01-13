@@ -17,3 +17,13 @@ module "storage" {
   storage_account_name = "datacorpsa${random_string.suffix.result}"
   container_name       = var.storage_container_name
 }
+
+module "webapp" {
+  source = "./modules/webapp"
+
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+
+  webapp_name      = "datacorp-webapp-${random_string.suffix.result}"
+  service_plan_sku = "F1"
+}

@@ -13,3 +13,7 @@ output "storage_account_name" {
 output "storage_container_name" {
   value = module.storage.container_name
 }
+
+output "webapp_url" {
+  value = module.webapp.default_hostname
+}
