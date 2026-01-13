@@ -34,6 +34,77 @@ Toutes les ressources sont déployées via Terraform en respectant les principes
 
 ---
 
+## 🛠️ Étapes de création des ressources
+
+Le déploiement de l’infrastructure est réalisé progressivement par Terraform selon les étapes suivantes :
+
+### 1. Initialisation du projet Terraform
+
+Terraform est initialisé afin de :
+
+* télécharger les providers nécessaires (AzureRM, etc.),
+* initialiser les modules Terraform,
+* préparer le backend local pour le state.
+
+Commande utilisée :
+
+```
+terraform init
+```
+
+### 2. Récupération du Resource Group existant
+
+Le Resource Group Azure n’est pas créé par Terraform.
+Il est récupéré via une **data source** afin d’y déployer les ressources.
+
+Terraform lit :
+
+* le nom du Resource Group,
+* sa localisation.
+
+### 3. Création du Storage Account et du Blob Container
+
+Terraform crée ensuite :
+
+* un **Storage Account Azure**,
+* un **Blob Container privé** destiné au stockage de données (par exemple des données brutes).
+
+Ces ressources sont gérées dans un module dédié afin de garantir leur indépendance et leur réutilisabilité.
+
+### 4. Déploiement de la Web App
+
+Terraform déploie :
+
+* un **App Service Plan** (SKU gratuit),
+* une **Web App Linux** associée à ce plan.
+
+La Web App est déployée sans application afin de servir de base pour de futurs services ou dashboards.
+
+### 5. Création de la Machine Virtuelle Linux
+
+Terraform crée une machine virtuelle Linux comprenant :
+
+* un réseau virtuel (VNet),
+* un subnet,
+* une adresse IP publique,
+* une carte réseau,
+* un Network Security Group autorisant l’accès SSH,
+* une VM Ubuntu 22.04 LTS.
+
+L’accès SSH est configuré à l’aide d’une clé publique locale.
+
+### 6. Vérification et destruction
+
+Une fois le déploiement terminé :
+
+* les ressources sont vérifiées via le portail Azure ou la CLI,
+* la VM est testée via une connexion SSH,
+* l’ensemble de l’infrastructure peut être supprimé avec la commande `terraform destroy`.
+
+Cette étape permet de valider le cycle de vie complet de l’infrastructure.
+
+---
+
 ## 📁 Structure du projet
 
 ```
@@ -203,5 +274,5 @@ terraform destroy
 
 ---
 
-## Auteur
+## 👤 Auteur
 LucasHzl
